@@ -1,0 +1,8 @@
+{
+  "name": "jquery.scrollwatch",
+  "author": "Andrew Cobby <andrew.cobby@theglobalmail.org>",
+  "dependencies": {
+    "jquery": "~1.8.3",
+    "lodash": "~1.0.0"
+  }
+}

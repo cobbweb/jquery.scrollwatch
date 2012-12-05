@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery Scroll Watcher</title>
+
+  <script src="components/jquery/jquery.js"></script>
+  <script src="components/lodash/lodash.js"></script>
+  <script src="src/jquery.viewport.js"></script>
+  <script src="src/jquery.scrollwatch.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    }
+
+    .whitespace {
+      height: 1024px;
+    }
+
+    #testing {
+      margin: 0 auto;
+      padding: 56px 24px;
+      width: 940px;
+      border: 1px solid #d5d5d5;
+      background-color: #f5f5f5;
+    }
+  </style>
+</head>
+<body>
+  <div class="whitespace"></div>
+
+  <div id="testing">Testing div that all day way off the page</div>
+
+  <div class="whitespace"></div>
+
+  <script>
+
+  $('#testing').scrollWatch({ delay: 1000 })
+    .on('scrollin', {
+      deferOutUntilIn: true
+    }, function() { console.log('in'); })
+    .on('scrollout', function() { console.log('out'); });
+
+  </script>
+</body>
+</html>
