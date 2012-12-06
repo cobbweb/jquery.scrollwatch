@@ -42,45 +42,34 @@
       }
 
       this.callbacks[event].add(callback);
+      $window.scroll();
       return this;
     },
 
     _createDelayedCallback: function(event, cb, options) {
-        // bail out if the element doesn't remain in the viewport after the delay
-        if (options.onlyDelayInViewport) {
-          var _cb = cb;
-
-          cb = _.bind(function() {
-            if (this.isInViewport()) {
-              _cb();
-            }
-          }, this);
-        }
-
-        if (event === "scrollin" && options.deferOutUntilIn) {
-          cb = this._createDeferredCallback(cb);
-        }
-
         return function() {
-          _.delay(cb, options.delay);
+          var args = arguments;
+          _.delay(function() {
+                cb.apply(null, args)
+            }, options.delay);
         };
-    },
-
-    _createDeferredCallback: function(cb)
-    {
-      var dfd = this.dfd = new $.Deferred();
-      return function() {
-        cb();
-        dfd.resolve();
-      };
     },
 
     handleScroll: function() {
       if (!this.callbacks) { return; }
 
       var inViewport = this.isInViewport();
+      var currentOffset = $window.scrollTop();
 
-      if (!this.inViewport && inViewport) {
+      if (!this.lastOffset) {
+        this.direction = false;
+      } else {
+          this.direction = (currentOffset > this.lastOffset) ? 'down' : 'up';
+      }
+
+      this.lastOffset = currentOffset;
+
+      if (!this.inViewport && inViewport > 0.9) {
         this.inViewport = true;
         this.trigger('scrollin');
       } else if (this.inViewport && !inViewport) {
@@ -92,15 +81,50 @@
           this.trigger('scrollout');
         }
       }
+
+      return this;
     },
 
     trigger: function(event)
     {
-      this.callbacks[event].fire();
+      if (event == this.lastTriggered) {
+        return false;
+      }
+
+      this.lastTriggered = event;
+      this.callbacks[event].fire({ direction: this.direction });
     },
 
     isInViewport: function() {
-      return $.inViewport(this.el) === 1;
+      var scrollTop = $window.scrollTop();
+      var windowHeight = $window.height();
+      var scrollBottom = scrollTop + windowHeight;
+
+      var elTop = this.$el.offset().top;
+      var elHeight = this.$el.outerHeight();
+      var elBottom = elTop + elHeight;
+
+      // element bigger than viewport size and off screen
+      if (elHeight > windowHeight && (elTop < scrollBottom || elBottom > scrollTop)) {
+          return 0;
+      }
+
+      // element small then viewport fully in view
+      if (elHeight < windowHeight && elTop > scrollTop && elBottom < scrollBottom) {
+        return 1;
+      }
+
+      // element bleeding off the bottom of the viewport
+      if (elTop > scrollTop && elTop < scrollBottom) {
+        return (scrollBottom - elTop) / elHeight;
+      }
+
+      // element bleeding off the top of the viewport
+      if (elBottom > scrollTop && elBottom < scrollBottom) {
+        return (scrollTop - elBottom) / elHeight;
+      }
+
+      return 0;
     },
 
     off: function() {

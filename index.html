@@ -6,7 +6,6 @@
 
   <script src="components/jquery/jquery.js"></script>
   <script src="components/lodash/lodash.js"></script>
-  <script src="src/jquery.viewport.js"></script>
   <script src="src/jquery.scrollwatch.js"></script>
 
   <style>
@@ -38,11 +37,10 @@
 
   <script>
 
-  $('#testing').scrollWatch({ delay: 1000 })
-    .on('scrollin', {
-      deferOutUntilIn: true
-    }, function() { console.log('in'); })
-    .on('scrollout', function() { console.log('out'); });
+  $('#testing').scrollWatch({ delay: 400 })
+    .on('scrollin', function(e) { console.log('in', e.direction); })
+    .on('scrollout', function(e) { console.log('out', e.direction); })
+    .handleScroll();
 
   </script>
 </body>
