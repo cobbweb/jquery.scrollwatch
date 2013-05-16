@@ -1,5 +1,6 @@
 {
   "name": "jquery.scrollwatch",
+  "version": "v0.0.2",
   "author": "Andrew Cobby <andrew.cobby@theglobalmail.org>",
   "dependencies": {
     "jquery": "~1.8.3",
