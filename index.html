@@ -16,30 +16,46 @@
     }
 
     .whitespace {
-      height: 1024px;
+      height: 2000px;
     }
 
-    #testing {
+    .box {
       margin: 0 auto;
       padding: 56px 24px;
       width: 940px;
       border: 1px solid #d5d5d5;
       background-color: #f5f5f5;
     }
+
+    #huge-box {
+      height: 2000px;
+    }
   </style>
 </head>
 <body>
   <div class="whitespace"></div>
 
-  <div id="testing">Testing div that all day way off the page</div>
+  <div id="testing" class="box">Testing div that all day way off the page</div>
+
+  <div class="whitespace"></div>
+
+  <div id="huge-box" class="box">
+    Huge box
+  </div>
 
   <div class="whitespace"></div>
 
   <script>
 
-  $('#testing').scrollWatch({ delay: 400 })
+  $('#testing').scrollWatch()
     .on('scrollin', function(e) { console.log('in', e.direction); })
     .on('scrollout', function(e) { console.log('out', e.direction); })
+    .handleScroll();
+
+  $('#huge-box').scrollWatch()
+    .on('scrollin', function(e) { console.log('huge in', e.direction); })
+    .on('scrollout', function(e) { console.log('huge out', e.direction); })
+    .on('scroll', function(e) { console.log('huge visibility', e.visibility); })
     .handleScroll();
 
   </script>
