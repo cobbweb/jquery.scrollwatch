@@ -15,7 +15,7 @@
     });
 
     this.inViewport = false;
-    this.callbacks = { "scrollin": $.Callbacks(), "scrollout": $.Callbacks() };
+    this.callbacks = { "scrollin": $.Callbacks(), "scrollout": $.Callbacks(), "scroll": $.Callbacks() };
     this.setupEvents();
   };
 
@@ -58,21 +58,22 @@
     handleScroll: function() {
       if (!this.callbacks) { return; }
 
-      var inViewport = this.isInViewport();
+      var lastVisibility = this.visibility;
+      var visibility = this.isInViewport();
       var currentOffset = $window.scrollTop();
 
       if (!this.lastOffset) {
         this.direction = false;
       } else {
-          this.direction = (currentOffset > this.lastOffset) ? 'down' : 'up';
+        this.direction = (currentOffset > this.lastOffset) ? 'down' : 'up';
       }
 
       this.lastOffset = currentOffset;
 
-      if (!this.inViewport && inViewport > 0.9) {
+      if (!this.inViewport && visibility > 0.9) {
         this.inViewport = true;
         this.trigger('scrollin');
-      } else if (this.inViewport && !inViewport) {
+      } else if (this.inViewport && !visibility) {
         this.inViewport = false;
 
         if (this.dfd) {
@@ -82,17 +83,22 @@
         }
       }
 
+      if (visibility !== lastVisibility) {
+        this.visibility = visibility;
+        this.trigger('scroll');        
+      }
+
       return this;
     },
 
-    trigger: function(event)
-    {
-      if (event == this.lastTriggered) {
+    trigger: function(event) {
+      if (event !== 'scroll' && event === this.lastTriggered) {
         return false;
+      } else {
+        this.lastTriggered = event;
       }
 
-      this.lastTriggered = event;
-      this.callbacks[event].fire({ direction: this.direction });
+      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility });
     },
 
     isInViewport: function() {
