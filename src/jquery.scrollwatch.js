@@ -105,8 +105,8 @@
       var elBottom = elTop + elHeight;
 
       // element bigger than viewport size and off screen
-      if (elHeight > windowHeight && (elTop < scrollBottom || elBottom > scrollTop)) {
-          return 0;
+      if (elHeight > windowHeight && scrollTop > elTop && scrollBottom < elBottom) {
+        return 1;
       }
 
       // element small then viewport fully in view
