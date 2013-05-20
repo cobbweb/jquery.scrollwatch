@@ -1,0 +1,13 @@
+{
+  "name": "jquery.scrollwatch",
+  "version": "0.0.2",
+  "author": "Andrew Cobby <andrew.cobby@gmail.com>",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-jshint": "~0.5.2",
+    "grunt-cli": "~0.1.8",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt": "~0.4.1"
+  }
+}
