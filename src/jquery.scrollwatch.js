@@ -44,12 +44,12 @@
     },
 
     _createDelayedCallback: function(event, cb, options) {
-        return function() {
-          var args = arguments;
-          _.delay(function() {
-                cb.apply(null, args);
-            }, options.delay);
-        };
+      return function() {
+        var args = arguments;
+        _.delay(function() {
+              cb.apply(null, args);
+          }, options.delay);
+      };
     },
 
     handleScroll: function() {
@@ -118,7 +118,7 @@
       var elBottom = elTop + elHeight;
 
       // element bigger than viewport size and off screen
-      if (elHeight > windowHeight && scrollTop > elTop && scrollBottom < elBottom) {
+      if (elHeight >= windowHeight && scrollTop >= elTop && scrollBottom <= elBottom) {
         return 1;
       }
 
