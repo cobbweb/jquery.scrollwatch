@@ -5,14 +5,12 @@
   var $window = $(window);
 
   var ScrollWatch = function(el, options) {
-    _.bindAll(this, 'handleScroll');
+    _.bindAll(this, 'handleScroll', 'onScroll');
 
     this.el = el;
     this.$el = $(el);
 
-    this.options = _.defaults(options || {}, {
-      throttle: 100
-    });
+    this.options = _.defaults(options || {});
 
     this.inViewport = false;
     this.callbacks = { "scrollin": $.Callbacks(), "scrollout": $.Callbacks(), "scroll": $.Callbacks() };
@@ -22,8 +20,7 @@
   ScrollWatch.prototype = {
 
     setupEvents: function() {
-      this._handleScroll = _.throttle(this.handleScroll, this.options.throttle);
-      $window.on('scroll', this._handleScroll)
+      $window.on('scroll', this.onScroll);
     },
 
     on: function(event, options, callback, thisArg) {
@@ -50,7 +47,7 @@
         return function() {
           var args = arguments;
           _.delay(function() {
-                cb.apply(null, args)
+                cb.apply(null, args);
             }, options.delay);
         };
     },
@@ -77,7 +74,7 @@
         this.inViewport = false;
 
         if (this.dfd) {
-          this.dfd.done(_.bind(this.trigger, this, 'scrollout'))
+          this.dfd.done(_.bind(this.trigger, this, 'scrollout'));
         } else {
           this.trigger('scrollout');
         }
@@ -89,6 +86,16 @@
       }
 
       return this;
+    },
+
+    onScroll: function() {
+      if (this.running) {
+        return;
+      }
+
+      this.running = true;
+      this.handleScroll();
+      this.running = false;
     },
 
     trigger: function(event) {
