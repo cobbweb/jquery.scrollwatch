@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ScrollWatch Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <!-- System under test dependencies -->
+  <script src="../components/jquery/jquery.js"></script>
+  <script src="../components/lodash/lodash.js"></script>
+
+
+  <!-- testing framework -->
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script>
+    mocha.setup('bdd');
+  </script>
+
+  <script src="../node_modules/grunt-mocha/phantomjs/bridge.js"></script>
+
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../node_modules/sinon-chai/lib/sinon-chai.js"></script>
+  <script src="../node_modules/chai-jquery/chai-jquery.js"></script>
+  
+  <script>
+    expect = chai.expect;
+  </script>
+  
+
+  <!-- System under test -->
+  <script src="../src/jquery.scrollwatch.js"></script>
+
+
+  <!-- specs -->
+  <script src="specs/ScrollWatchSpec.js"></script>
+
+
+  <!-- RUN! RUN! RUN! -->
+  <script>
+    mocha.run();
+  </script>
+</body>
+</html>
