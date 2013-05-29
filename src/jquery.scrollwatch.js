@@ -41,8 +41,8 @@
 
     on: function(event, options, callback, thisArg) {
       if (_.isFunction(options)) {
-        callback = options;
         thisArg = callback;
+        callback = options;
         options = {};
       }
 
@@ -63,8 +63,8 @@
       return function() {
         var args = arguments;
         _.delay(function() {
-              cb.apply(null, args);
-          }, options.delay);
+          cb.apply(this, args);
+        }, options.delay);
       };
     },
 
