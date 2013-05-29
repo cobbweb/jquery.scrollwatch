@@ -1,6 +1,6 @@
 # jquery.scrollWatch
 
- > Triggers events on various objects as they are scrolled in to and out of viewport, or a scrollable element.
+ > Triggers events on various page elements as they are scrolled in to and out of view.
 
 ## Usage
 
@@ -46,6 +46,8 @@ A percent of the element that is visible, only useful for the `scroll` event.
 *NOTE:* Elements that are taller than the viewport would technically never have 100% visibility. However, `visibility` will *jump* to `1` when both the top and bottom of the element are bleeding off the screen (effectively the element is taking up the entire vertical viewport space).
 
 ### Options
+
+`$('#element').scrollWatch(options)`
 
 * `watchOn` - The scrollable element to watch on. Can be a selector, DOM node or jQuery object. When using a custom element, it should have `overflow: scroll`. Defaults to `window`.
 

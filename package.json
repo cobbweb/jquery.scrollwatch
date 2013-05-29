@@ -1,7 +1,7 @@
 {
   "name": "jquery.scrollwatch",
   "version": "0.2.0",
-  "description": "Fires events as elements scroll in to and out of the viewport, or scrollable element",
+  "description": "Triggers events on various page elements as they are scrolled in to and out of view.",
   "author": "Andrew Cobby <andrew.cobby@gmail.com>",
   "devDependencies": {
     "grunt-contrib-copy": "~0.4.1",
