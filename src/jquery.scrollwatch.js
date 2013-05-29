@@ -3,12 +3,11 @@
 
   var POSITIONED = ['fixed', 'relative', 'absolute'];
 
-  // cache window as jQuery object
   var ScrollWatch = function(el, options) {
     _.bindAll(this, 'handleScroll', 'onScroll');
 
     this.$el = $(el);
-    this.el = el[0];
+    this.el = this.$el[0];
 
     this.options = _.defaults(options || {}, {
       watchOn: window
@@ -176,7 +175,7 @@
         data = $this.data('scrollWatch');
 
     if (!data) {
-      $this.data('scrollWatch', (data = new ScrollWatch(this, options)));
+      $this.data('scrollWatch', (data = new window.ScrollWatch(this, options)));
     }
 
     return data;
