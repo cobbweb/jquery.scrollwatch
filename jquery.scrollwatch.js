@@ -1,17 +1,20 @@
-(function($) {
+(function($, window) {
   'use strict';
 
-  // cache window as jQuery object
-  var $window = $(window);
+  var POSITIONED = ['fixed', 'relative', 'absolute'];
 
   var ScrollWatch = function(el, options) {
     _.bindAll(this, 'handleScroll', 'onScroll');
 
-    this.el = el;
     this.$el = $(el);
+    this.el = this.$el[0];
 
-    this.options = _.defaults(options || {});
+    this.options = _.defaults(options || {}, {
+      watchOn: window
+    });
 
+    this.$watchOn = $(this.options.watchOn);
+    this._prepareContainer();
     this.inViewport = false;
     this.callbacks = { "scrollin": $.Callbacks(), "scrollout": $.Callbacks(), "scroll": $.Callbacks() };
     this.setupEvents();
@@ -19,14 +22,27 @@
 
   ScrollWatch.prototype = {
 
+    _prepareContainer: function() {
+      if (this.$watchOn[0] === window) {
+        return; // no prep needed for window
+      }
+
+      var positioning = this.$watchOn.css('position');
+      var isPositioned = _.contains(POSITIONED, positioning);
+
+      if (!isPositioned) {
+        this.$watchOn.css('position', 'relative');
+      }
+    },
+
     setupEvents: function() {
-      $window.on('scroll', this.onScroll);
+      this.$watchOn.on('scroll', this.onScroll);
     },
 
     on: function(event, options, callback, thisArg) {
       if (_.isFunction(options)) {
-        callback = options;
         thisArg = callback;
+        callback = options;
         options = {};
       }
 
@@ -39,7 +55,7 @@
       }
 
       this.callbacks[event].add(callback);
-      $window.scroll();
+      this.$watchOn.scroll();
       return this;
     },
 
@@ -47,17 +63,15 @@
       return function() {
         var args = arguments;
         _.delay(function() {
-              cb.apply(null, args);
-          }, options.delay);
+          cb.apply(this, args);
+        }, options.delay);
       };
     },
 
     handleScroll: function() {
-      if (!this.callbacks) { return; }
-
       var lastVisibility = this.visibility;
       var visibility = this.isInViewport();
-      var currentOffset = $window.scrollTop();
+      var currentOffset = this.$watchOn.scrollTop();
 
       if (!this.lastOffset) {
         this.direction = false;
@@ -66,11 +80,12 @@
       }
 
       this.lastOffset = currentOffset;
+      this.visibility = visibility;  
 
-      if (!this.inViewport && visibility > 0.9) {
+      if (!this.inViewport && visibility === 1) {
         this.inViewport = true;
         this.trigger('scrollin');
-      } else if (this.inViewport && !visibility) {
+      } else if (this.inViewport && visibility === 0) {
         this.inViewport = false;
 
         if (this.dfd) {
@@ -80,20 +95,21 @@
         }
       }
 
+      // prevent firing multiple `scroll` events when the visibility is the same
       if (visibility !== lastVisibility) {
-        this.visibility = visibility;
-        this.trigger('scroll');        
+        this.trigger('scroll');
       }
 
       return this;
     },
 
-    onScroll: function() {
+    onScroll: function(event) {
       if (this.running) {
         return;
       }
 
       this.running = true;
+      this.originalEvent = event;
       this.handleScroll();
       this.running = false;
     },
@@ -101,34 +117,39 @@
     trigger: function(event) {
       if (event !== 'scroll' && event === this.lastTriggered) {
         return false;
-      } else {
-        this.lastTriggered = event;
       }
 
-      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility });
+      this.lastTriggered = event;
+      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility, originalEvent: event });
+    },
+
+    _getOffsetTop: function() {
+      return (this.$watchOn[0] === window) ? this.$el.offset().top : this.el.offsetTop;
     },
 
     isInViewport: function() {
-      var scrollTop = $window.scrollTop();
-      var windowHeight = $window.height();
-      var scrollBottom = scrollTop + windowHeight;
+      var scrollTop = this.$watchOn.scrollTop();
+      var containerHeight = this.$watchOn.height();
+      var scrollBottom = scrollTop + containerHeight;
 
-      var elTop = this.$el.offset().top;
+      var elTop = this._getOffsetTop();
       var elHeight = this.$el.outerHeight();
       var elBottom = elTop + elHeight;
 
+      var elementIsBiggerThanContainer = elHeight >= containerHeight;
+
       // element bigger than viewport size and off screen
-      if (elHeight >= windowHeight && scrollTop >= elTop && scrollBottom <= elBottom) {
+      if (elementIsBiggerThanContainer && scrollTop >= elTop && scrollBottom <= elBottom) {
         return 1;
       }
 
       // element small then viewport fully in view
-      if (elHeight < windowHeight && elTop > scrollTop && elBottom < scrollBottom) {
+      if (!elementIsBiggerThanContainer && elTop > scrollTop && elBottom < scrollBottom) {
         return 1;
       }
 
       // element bleeding off the bottom of the viewport
-      if (elTop > scrollTop && elTop < scrollBottom) {
+      if (elTop > scrollTop && elTop < scrollBottom && elBottom > scrollBottom) {
         return (scrollBottom - elTop) / elHeight;
       }
 
@@ -137,11 +158,12 @@
         return (scrollTop - elBottom) / elHeight;
       }
 
+      // return zero visibility because nothing above matched
       return 0;
     },
 
     off: function() {
-      $window.off('scroll', this._handleScroll);
+      this.$watchOn.off('scroll', this._handleScroll);
     }
 
   };
@@ -153,10 +175,10 @@
         data = $this.data('scrollWatch');
 
     if (!data) {
-      $this.data('scrollWatch', (data = new ScrollWatch(this, options)));
+      $this.data('scrollWatch', (data = new window.ScrollWatch(this, options)));
     }
 
     return data;
   };
 
-}(jQuery));
+}(jQuery, window));
