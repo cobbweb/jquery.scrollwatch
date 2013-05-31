@@ -124,7 +124,21 @@
     },
 
     _getOffsetTop: function() {
-      return (this.$watchOn[0] === window) ? this.$el.offset().top : this.el.offsetTop;
+      if (this.$watchOn[0] === window) {
+        return this.$el.offset().top;
+      }
+
+      var el = this.el;
+      var offset = 0;
+      var maxLoops = 30; // overflow protection
+      
+      do {
+        offset += el.offsetTop;
+        el = el.offsetParent;
+        maxLoops--;
+      } while (el !== this.$watchOn[0] && maxLoops);
+
+      return offset;
     },
 
     isInViewport: function() {
