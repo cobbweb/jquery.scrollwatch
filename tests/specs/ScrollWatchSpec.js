@@ -67,9 +67,13 @@ describe('jquery.scrollwatch', function() {
     });
 
     it('should setup listening to the scroll event', function() {
-      expect(spy).to.have.been.calledOnce;
       expect(spy).to.have.been.calledWithExactly('scroll', scrollWatch.onScroll);
       expect(spy).to.have.been.calledOn(scrollWatch.$watchOn);
+    });
+
+    it('should setup listening to resize events on the window', function() {
+      expect(spy).to.have.been.calledWithExactly(sinon.match('resize'), scrollWatch.onScroll)
+       .and.calledOn(sinon.match(function(actual) { return actual[0] === window; }));
     });
 
     describe('custom watchOn element', function() {
