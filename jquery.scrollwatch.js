@@ -2,6 +2,7 @@
   'use strict';
 
   var POSITIONED = ['fixed', 'relative', 'absolute'];
+  var WINDOW_EVENTS = 'mousewheel resize';
 
   var $window = $(window);
 
@@ -19,7 +20,7 @@
     this._prepareContainer();
     this.inViewport = false;
     this.callbacks = { "scrollin": $.Callbacks(), "scrollout": $.Callbacks(), "scroll": $.Callbacks() };
-    this.setupEvents();
+    this.listen();
   };
 
   ScrollWatch.prototype = {
@@ -37,9 +38,15 @@
       }
     },
 
-    setupEvents: function() {
+    listen: function() {
       this.$watchOn.on('scroll', this.onScroll);
-      $window.on('mousewheel resize', this.onScroll);
+      $window.on(WINDOW_EVENTS, this.onScroll);
+    },
+
+    destroy: function() {
+      this.$watchOn.off('scroll', this.onScroll);
+      $window.off(WINDOW_EVENTS, this.onScroll);
+      this.$el.data('scrollWatch', null);
     },
 
     on: function(event, options, callback, thisArg) {
@@ -83,7 +90,7 @@
       }
 
       this.lastOffset = currentOffset;
-      this.visibility = visibility;  
+      this.visibility = visibility;
 
       if (!this.inViewport && visibility === 1) {
         this.inViewport = true;
@@ -133,7 +140,7 @@
 
       var el = this.el;
       var offset = 0;
-      
+
       do {
         offset += el.offsetTop;
         el = el.offsetParent;
@@ -175,10 +182,6 @@
 
       // return zero visibility because nothing above matched
       return 0;
-    },
-
-    off: function() {
-      this.$watchOn.off('scroll', this._handleScroll);
     }
 
   };
