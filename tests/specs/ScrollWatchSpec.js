@@ -222,5 +222,27 @@ describe('jquery.scrollwatch', function() {
         });
       });
     });
+
+    describe('destroy', function() {
+      var $el = $('<div/>'), scrollWatch;
+
+      beforeEach(function() {
+        sinon.spy($.fn, 'off');
+        $el = $el.clone();
+        scrollWatch = $el.scrollWatch();
+        scrollWatch.destroy();
+      });
+
+      afterEach(function() {
+        $.fn.off.restore();
+      });
+
+      it('should unbind events', function() {
+        expect($.fn.off).to.have.been.calledTwice;
+        expect($.fn.off).been.calledWithExactly('scroll', scrollWatch.onScroll)
+          .and.been.calledOn(scrollWatch.$watchOn)
+          .and.been.calledWithExactly('mousewheel resize', scrollWatch.onScroll);
+      });
+    });
   });
 });
