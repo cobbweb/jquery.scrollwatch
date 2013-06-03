@@ -130,13 +130,11 @@
 
       var el = this.el;
       var offset = 0;
-      var maxLoops = 30; // overflow protection
       
       do {
         offset += el.offsetTop;
         el = el.offsetParent;
-        maxLoops--;
-      } while (el !== this.$watchOn[0] && maxLoops);
+      } while (el && el !== this.$watchOn[0]);
 
       return offset;
     },
