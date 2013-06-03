@@ -3,6 +3,8 @@
 
   var POSITIONED = ['fixed', 'relative', 'absolute'];
 
+  var $window = $(window);
+
   var ScrollWatch = function(el, options) {
     _.bindAll(this, 'handleScroll', 'onScroll');
 
@@ -37,6 +39,7 @@
 
     setupEvents: function() {
       this.$watchOn.on('scroll', this.onScroll);
+      $window.on('mousewheel resize', this.onScroll);
     },
 
     on: function(event, options, callback, thisArg) {
