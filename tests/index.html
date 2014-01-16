@@ -9,9 +9,8 @@
   <div id="mocha"></div>
 
   <!-- System under test dependencies -->
-  <script src="../components/jquery/jquery.js"></script>
-  <script src="../components/lodash/lodash.js"></script>
-
+  <script src="../bower_components/jquery/jquery.js"></script>
+  <script src="../bower_components/lodash/lodash.js"></script>
 
   <!-- testing framework -->
   <script src="../node_modules/mocha/mocha.js"></script>
@@ -20,7 +19,6 @@
   </script>
 
   <script src="../node_modules/grunt-mocha/phantomjs/bridge.js"></script>
-
   <script src="../node_modules/chai/chai.js"></script>
   <script src="../node_modules/sinon/pkg/sinon.js"></script>
   <script src="../node_modules/sinon-chai/lib/sinon-chai.js"></script>
@@ -30,14 +28,11 @@
     expect = chai.expect;
   </script>
   
-
   <!-- System under test -->
   <script src="../src/jquery.scrollwatch.js"></script>
 
-
   <!-- specs -->
   <script src="specs/ScrollWatchSpec.js"></script>
-
 
   <!-- RUN! RUN! RUN! -->
   <script>
