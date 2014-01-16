@@ -2,6 +2,8 @@
 
  > Triggers events on various page elements as they are scrolled in to and out of view.
 
+[![Build Status](https://travis-ci.org/cobbweb/jquery.scrollwatch.png?branch=master)](https://travis-ci.org/cobbweb/jquery.scrollwatch)
+
 ## Usage
 
 Bind events using the `.on()` method:
