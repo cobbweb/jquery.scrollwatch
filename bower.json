@@ -8,6 +8,7 @@
   },
   "ignore": [
     "Gruntfile.js",
-    "src/"
+    "src/",
+    ".travis.yml"
   ]
 }
