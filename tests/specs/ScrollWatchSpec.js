@@ -202,7 +202,7 @@ describe('jquery.scrollwatch', function() {
         describe('bleeding off the top of the view', function() {
           describe('half showing', function() {
             beforeEach(function() {
-              elTop.returns(1875)
+              elTop.returns(1875);
             });
 
             it('should have 50% visibility', function() {
@@ -218,7 +218,7 @@ describe('jquery.scrollwatch', function() {
             it('should have 80% visibility', function() {
               expect(scrollWatch.isInViewport()).to.equal(-0.8);
             });
-          })
+          });
         });
       });
     });
