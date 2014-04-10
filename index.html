@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>jQuery Scroll Watcher</title>
 
-  <script src="components/jquery/jquery.js"></script>
-  <script src="components/lodash/lodash.js"></script>
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
   <script src="src/jquery.scrollwatch.js"></script>
 
   <style>
@@ -47,10 +47,12 @@
 
   <script>
 
-  $('#testing').scrollWatch()
-    .on('scrollin', function(e) { console.log('in', e.direction); })
-    .on('scrollout', function(e) { console.log('out', e.direction); })
-    .handleScroll();
+  $('#testing')
+    .css('height', document.documentElement.clientHeight + 'px')
+    .scrollWatch()
+      .on('scrollin', function(e) { console.log('in', e.direction); })
+      .on('scrollout', function(e) { console.log('out', e.direction); })
+      .handleScroll();
 
   $('#huge-box').scrollWatch()
     .on('scrollin', function(e) { console.log('huge in', e.direction); })
