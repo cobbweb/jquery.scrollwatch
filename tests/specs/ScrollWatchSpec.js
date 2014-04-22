@@ -130,6 +130,11 @@ describe('jquery.scrollwatch', function() {
                     .and.calledOn(scrollWatch.$el);
     });
 
+    it('should have an originalEvent that is a jQuery.Event object', function() {
+      var event = spy.args[0][0];
+      expect(event.originalEvent).to.be.instanceOf(jQuery.Event);
+    });
+
     describe('with a custom thisArg', function() {
       var thisArg = { 'because': 'yolo' };
 

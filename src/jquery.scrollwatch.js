@@ -130,7 +130,7 @@
       }
 
       this.lastTriggered = event;
-      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility, originalEvent: event });
+      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility, originalEvent: this.originalEvent });
     },
 
     _getOffsetTop: function() {
