@@ -7,17 +7,17 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-jshint": "~0.5.2",
-    "grunt-cli": "~0.1.8",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt": "~0.4.1",
-    "mocha": "~1.10.0",
-    "chai": "~1.6.0",
-    "sinon": "~1.7.2",
-    "sinon-chai": "~2.4.0",
-    "chai-jquery": "~1.1.1",
-    "grunt-mocha": "~0.3.2"
+    "grunt-contrib-copy": "^0.4.1",
+    "grunt-contrib-jshint": "^0.5.2",
+    "grunt-cli": "^0.1.8",
+    "grunt-contrib-uglify": "^0.2.0",
+    "grunt": "^0.4.1",
+    "mocha": "^1.10.0",
+    "chai": "^1.6.0",
+    "sinon": "^1.7.2",
+    "sinon-chai": "^2.4.0",
+    "chai-jquery": "^1.1.1",
+    "grunt-mocha": "^0.3.2"
   },
   "license": "MIT"
 }

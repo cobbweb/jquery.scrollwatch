@@ -3,8 +3,8 @@
   "version": "v0.2.5",
   "author": "Andrew Cobby <andrew.cobby@gmail.org>",
   "dependencies": {
-    "jquery": "~1.9.0",
-    "lodash": "~1.2.1"
+    "jquery": "1.9.0 - 2.1.0",
+    "lodash": "^1.2.1"
   },
   "ignore": [
     "Gruntfile.js",
