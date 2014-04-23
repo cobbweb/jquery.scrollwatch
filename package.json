@@ -6,6 +6,10 @@
   "scripts": {
     "test": "grunt test"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cobbweb/jquery.scrollwatch.git"
+  },
   "devDependencies": {
     "grunt-contrib-copy": "^0.4.1",
     "grunt-contrib-jshint": "^0.5.2",
