@@ -250,4 +250,22 @@ describe('jquery.scrollwatch', function() {
       });
     });
   });
+
+  describe('bug fixes', function() {
+    describe('when scrolling starts from the top (this.lastOffset = 0)', function() {
+      var $el = $('<div/>'), scrollWatch;
+
+      beforeEach(function() {
+        $el = $el.clone();
+        scrollWatch = $el.scrollWatch();
+        scrollWatch.lastOffset = 0;
+        sinon.stub(scrollWatch.$watchOn, 'scrollTop').returns(25);
+        scrollWatch.handleScroll();
+      });
+
+      it('should not report the direction as false', function() {
+        expect(scrollWatch.direction).to.equal('down');
+      });
+    });
+  });
 });

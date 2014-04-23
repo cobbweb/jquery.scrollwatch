@@ -83,7 +83,7 @@
       var visibility = this.isInViewport();
       var currentOffset = this.$watchOn.scrollTop();
 
-      if (!this.lastOffset) {
+      if (this.lastOffset === false) {
         this.direction = false;
       } else {
         this.direction = (currentOffset > this.lastOffset) ? 'down' : 'up';
