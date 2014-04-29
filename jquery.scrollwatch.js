@@ -83,7 +83,7 @@
       var visibility = this.isInViewport();
       var currentOffset = this.$watchOn.scrollTop();
 
-      if (!this.lastOffset) {
+      if (this.lastOffset === false) {
         this.direction = false;
       } else {
         this.direction = (currentOffset > this.lastOffset) ? 'down' : 'up';
@@ -130,7 +130,7 @@
       }
 
       this.lastTriggered = event;
-      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility, originalEvent: event });
+      this.callbacks[event].fire({ direction: this.direction, visibility: this.visibility, originalEvent: this.originalEvent });
     },
 
     _getOffsetTop: function() {
@@ -165,8 +165,8 @@
         return 1;
       }
 
-      // element small then viewport fully in view
-      if (!elementIsBiggerThanContainer && elTop > scrollTop && elBottom < scrollBottom) {
+      // element smaller than viewport and fully in view
+      if (!elementIsBiggerThanContainer && elTop >= scrollTop && elBottom <= scrollBottom) {
         return 1;
       }
 

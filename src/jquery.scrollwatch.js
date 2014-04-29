@@ -165,8 +165,8 @@
         return 1;
       }
 
-      // element small then viewport fully in view
-      if (!elementIsBiggerThanContainer && elTop > scrollTop && elBottom < scrollBottom) {
+      // element smaller than viewport and fully in view
+      if (!elementIsBiggerThanContainer && elTop >= scrollTop && elBottom <= scrollBottom) {
         return 1;
       }
 
