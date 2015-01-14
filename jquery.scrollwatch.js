@@ -78,7 +78,9 @@
       };
     },
 
-    handleScroll: function() {
+    // Force=true circumvents our logic that prevents multiple `scroll` events
+    // when the visibility is the same
+    handleScroll: function(force) {
       var lastVisibility = this.visibility;
       var visibility = this.isInViewport();
       var currentOffset = this.$watchOn.scrollTop();
@@ -106,7 +108,7 @@
       }
 
       // prevent firing multiple `scroll` events when the visibility is the same
-      if (visibility !== lastVisibility) {
+      if (visibility !== lastVisibility || force) {
         this.trigger('scroll');
       }
 
