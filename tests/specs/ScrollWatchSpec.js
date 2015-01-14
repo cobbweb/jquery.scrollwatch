@@ -160,19 +160,18 @@ describe('jquery.scrollwatch', function() {
       containerHeight = sinon.stub(scrollWatch.$watchOn, 'height').returns(500);
       scrollTop = sinon.stub(scrollWatch.$watchOn, 'scrollTop').returns(2000);
       elTop = sinon.stub(scrollWatch, '_getOffsetTop');
-      elHeight = sinon.stub(scrollWatch.$el, 'outerHeight');
+      scrollWatch.el = { offsetHeight: 0 };
     });
 
     afterEach(function() {
       containerHeight.restore();
       scrollTop.restore();
       elTop.restore();
-      elHeight.restore();
     });
 
     describe('with a small element', function() {
       beforeEach(function() {
-        elHeight.returns(250);
+        scrollWatch.el.offsetHeight = 250;
       });
 
       describe('below the view', function() {
