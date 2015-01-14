@@ -155,7 +155,7 @@
       var scrollBottom = scrollTop + containerHeight;
 
       var elTop = this._getOffsetTop();
-      var elHeight = this.$el.outerHeight();
+      var elHeight = this.el.offsetHeight;
       var elBottom = elTop + elHeight;
 
       var elementIsBiggerThanContainer = elHeight >= containerHeight;

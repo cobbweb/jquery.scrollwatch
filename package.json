@@ -1,6 +1,6 @@
 {
   "name": "jquery.scrollwatch",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Triggers events on various page elements as they are scrolled in to and out of view.",
   "author": "Andrew Cobby <andrew.cobby@gmail.com>",
   "scripts": {
