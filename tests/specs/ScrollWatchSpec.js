@@ -1,4 +1,4 @@
-describe('jquery.scrollwatch', function() {  
+describe('jquery.scrollwatch', function() {
   it('should exist as a global', function() {
     expect(ScrollWatch).to.exist;
   });
@@ -11,7 +11,7 @@ describe('jquery.scrollwatch', function() {
     var $el = $('<div>');
     var options = { watchOn: '#scrolly' };
     var sc1, sc2, spy;
-    
+
     beforeEach(function() {
       spy = sinon.spy(window, 'ScrollWatch');
       $el = $el.clone();
@@ -22,7 +22,7 @@ describe('jquery.scrollwatch', function() {
     afterEach(function() {
       spy.restore();
     });
-    
+
     it('should only keep one scrollWatch instance per element', function() {
       expect(sc1).to.equal(sc2);
       expect(spy).to.have.been.calledOnce;
@@ -147,107 +147,107 @@ describe('jquery.scrollwatch', function() {
         expect(spy).to.have.been.calledOnce.and.calledOn(thisArg);
       });
     });
+  });
 
-    describe('isInViewport', function() {
-      var $el = $('<div/>');
-      var scrollWatch;
-      var scrollTop, containerHeight, elTop, elHeight;
+  describe('isInViewport', function() {
+    var $el = $('<div/>');
+    var scrollWatch;
+    var scrollTop, containerHeight, elTop, elHeight;
 
+    beforeEach(function() {
+      $el = $el.clone();
+      scrollWatch = new ScrollWatch($el);
+      containerHeight = sinon.stub(scrollWatch.$watchOn, 'height').returns(500);
+      scrollTop = sinon.stub(scrollWatch.$watchOn, 'scrollTop').returns(2000);
+      elTop = sinon.stub(scrollWatch, '_getOffsetTop');
+      elHeight = sinon.stub(scrollWatch.$el, 'outerHeight');
+    });
+
+    afterEach(function() {
+      containerHeight.restore();
+      scrollTop.restore();
+      elTop.restore();
+      elHeight.restore();
+    });
+
+    describe('with a small element', function() {
       beforeEach(function() {
-        $el = $el.clone();
-        scrollWatch = new ScrollWatch($el);
-        containerHeight = sinon.stub(scrollWatch.$watchOn, 'height').returns(500);
-        scrollTop = sinon.stub(scrollWatch.$watchOn, 'scrollTop').returns(2000);
-        elTop = sinon.stub(scrollWatch, '_getOffsetTop');
-        elHeight = sinon.stub(scrollWatch.$el, 'outerHeight');
+        elHeight.returns(250);
       });
 
-      afterEach(function() {
-        containerHeight.restore();
-        scrollTop.restore();
-        elTop.restore();
-        elHeight.restore();
-      });
-
-      describe('with a small element', function() {
+      describe('below the view', function() {
         beforeEach(function() {
-          elHeight.returns(250);
+          elTop.returns(4000);
         });
 
-        describe('below the view', function() {
+        it('should have zero visibility', function() {
+          expect(scrollWatch.isInViewport()).to.equal(0);
+        });
+      });
+
+      describe('above the view', function() {
+        beforeEach(function() {
+          elTop.returns(100);
+        });
+
+        it('should have zero visibility', function() {
+          expect(scrollWatch.isInViewport()).to.equal(0);
+        });
+      });
+
+      describe('fully in the view', function() {
+        beforeEach(function() {
+          elTop.returns(2100);
+        });
+
+        it('should have full visibility', function() {
+          expect(scrollWatch.isInViewport()).to.equal(1);
+        });
+      });
+
+      describe('bleeding off the top of the view', function() {
+        describe('half showing', function() {
           beforeEach(function() {
-            elTop.returns(4000);
+            elTop.returns(1875);
           });
 
-          it('should have zero visibility', function() {
-            expect(scrollWatch.isInViewport()).to.equal(0);
+          it('should have 50% visibility', function() {
+            expect(scrollWatch.isInViewport()).to.equal(-0.5);
           });
         });
 
-        describe('above the view', function() {
+        describe('more showing', function() {
           beforeEach(function() {
-            elTop.returns(100);
+            elTop.returns(1950);
           });
 
-          it('should have zero visibility', function() {
-            expect(scrollWatch.isInViewport()).to.equal(0);
-          });
-        });
-
-        describe('fully in the view', function() {
-          beforeEach(function() {
-            elTop.returns(2100);
-          });
-
-          it('should have full visibility', function() {
-            expect(scrollWatch.isInViewport()).to.equal(1);
-          });
-        });
-
-        describe('bleeding off the top of the view', function() {
-          describe('half showing', function() {
-            beforeEach(function() {
-              elTop.returns(1875);
-            });
-
-            it('should have 50% visibility', function() {
-              expect(scrollWatch.isInViewport()).to.equal(-0.5);
-            });
-          });
-
-          describe('more showing', function() {
-            beforeEach(function() {
-              elTop.returns(1950);
-            });
-
-            it('should have 80% visibility', function() {
-              expect(scrollWatch.isInViewport()).to.equal(-0.8);
-            });
+          it('should have 80% visibility', function() {
+            expect(scrollWatch.isInViewport()).to.equal(-0.8);
           });
         });
       });
     });
+  });
 
-    describe('destroy', function() {
-      var $el = $('<div/>'), scrollWatch;
+  describe('destroy', function() {
+    var $el = $('<div/>'), scrollWatch;
 
-      beforeEach(function() {
-        sinon.spy($.fn, 'off');
-        $el = $el.clone();
-        scrollWatch = $el.scrollWatch();
-        scrollWatch.destroy();
-      });
+    beforeEach(function() {
+      sinon.spy($.fn, 'off');
+      $el = $el.clone();
+      scrollWatch = $el.scrollWatch();
+      scrollWatch.destroy();
+    });
 
-      afterEach(function() {
-        $.fn.off.restore();
-      });
+    afterEach(function() {
+      $.fn.off.restore();
+    });
 
-      it('should unbind events', function() {
-        expect($.fn.off).to.have.been.calledTwice;
-        expect($.fn.off).been.calledWithExactly('scroll', scrollWatch.onScroll)
-          .and.been.calledOn(scrollWatch.$watchOn)
-          .and.been.calledWithExactly('mousewheel resize', scrollWatch.onScroll);
-      });
+    it('should unbind events', function() {
+      expect($.fn.off).to.have.been.calledTwice;
+      expect($.fn.off).been.calledWithExactly('scroll', scrollWatch.onScroll)
+      .and.been.calledOn(scrollWatch.$watchOn)
+      .and.been.calledWithExactly('mousewheel resize', scrollWatch.onScroll);
     });
   });
 
