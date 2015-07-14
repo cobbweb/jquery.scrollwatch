@@ -22,8 +22,8 @@ Bind events using the `.on()` method:
 
 ### Events
 
- * `scrollin` (event) — Triggered once, when the element is fully visible in the viewport.
- * `scrollout` (event) — Triggered once, when the element none of the element is visible. Only triggers if `scrollin` has been called.
+ * `scrollin` (event) — Triggered once, when the element is *fully* visible in the viewport.
+ * `scrollout` (event) — Triggered once, when the none of the element is visible. Only triggers if `scrollin` has been called on the element.
  * `scroll` (event) — Triggered many times, every scroll event when the element is partially *or* fully visible.
 
 #### Event object
